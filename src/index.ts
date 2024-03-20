@@ -6,7 +6,7 @@ import { Redis } from "ioredis";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
-const client = new Redis();
+const client = new Redis(process.env.REDIS_URL!);
 
 app.use(cors());
 app.use(express.json());
