@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import axios from "axios";
 import db from "./db";
-import { createClient } from "redis";
+import { Redis } from "ioredis";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
@@ -10,7 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const client = createClient({ url: process.env.REDIS_URL });
+const client = new Redis({
+  host: process.env.REDIS_URL,
+  port: 6379,
+});
+
 app.post("/submit", async (req, res) => {
   const { username, code, language, input } = await req.body;
 
