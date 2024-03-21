@@ -75,18 +75,18 @@ app.post("/submit", async (req, res) => {
   }
 });
 app.get("/submissions", async (req, res) => {
-  // const cachedData = await client.get("submissions");
+  const cachedData = await client.get("submissions");
 
-  // if (cachedData) {
-  //   console.log("Data retrieved from Redis cache");
-  //   return res.json(JSON.parse(cachedData));
-  // }
+  if (cachedData) {
+    console.log("Data retrieved from Redis cache");
+    return res.json(JSON.parse(cachedData));
+  }
 
   const q = await db.query("SELECT * FROM submissions");
   console.log("Data retrieved from database");
 
-  // await client.set("submissions", JSON.stringify(q[0]));
-  // await client.expire("submissions", 20);
+  await client.set("submissions", JSON.stringify(q[0]));
+  await client.expire("submissions", 20);
 
   return res.json(q[0]);
 });
